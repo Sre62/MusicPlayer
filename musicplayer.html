@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クロスプラットフォーム動画プレイヤー</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e4e4e4;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            min-height: 100vh;
+        }
+
+        /* ヘッダー */
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .header p {
+            color: #8892b0;
+            font-size: 1.1rem;
+        }
+
+        /* サーバー起動案内 */
+        .server-notice {
+            grid-column: 1 / -1;
+            background: linear-gradient(145deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.2));
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .server-notice.show {
+            display: flex;
+        }
+
+        .server-notice-icon {
+            font-size: 1.5rem;
+        }
+
+        .server-notice-text {
+            flex: 1;
+        }
+
+        .server-notice-text h4 {
+            color: #ffc107;
+            margin-bottom: 4px;
+        }
+
+        .server-notice-text p {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        .server-notice-text code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* プレイヤーエリア */
+        .player-area {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .video-container iframe,
+        .video-container #youtubePlayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .no-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+        }
+
+        /* 再生コントロール */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(145deg, #7b2cbf, #5a189a);
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
+        }
+
+        .control-btn:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .control-btn.playing {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a5a);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        /* シャッフル・リピートボタン */
+        .mode-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #888;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .mode-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #aaa;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .mode-btn::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .mode-btn:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 現在再生中の情報 */
+        .now-playing {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .now-playing h3 {
+            color: #00d4ff;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .now-playing .title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .now-playing .platform {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .now-playing .play-mode-info {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #8892b0;
+        }
+
+        .now-playing .play-mode-info .active-mode {
+            color: #00d4ff;
+        }
+
+        .platform.youtube {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+        }
+
+        .platform.niconico {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* サイドバー */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .add-video-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .add-video-section h2 {
+            color: #00d4ff;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #8892b0;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .input-group input::placeholder {
+            color: #555;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* プレイリスト */
+        .playlist-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .playlist-header h2 {
+            color: #7b2cbf;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .playlist-count {
+            background: rgba(123, 44, 191, 0.2);
+            color: #7b2cbf;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .playlist {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .playlist::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .playlist::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .playlist::-webkit-scrollbar-thumb {
+            background: rgba(123, 44, 191, 0.5);
+            border-radius: 3px;
+        }
+
+        .playlist-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .playlist-item.active {
+            background: rgba(123, 44, 191, 0.2);
+            border-color: rgba(123, 44, 191, 0.5);
+        }
+
+        .playlist-item.active .item-index {
+            background: linear-gradient(145deg, #7b2cbf, #5a189a);
+        }
+
+        .playlist-item.dragging {
+            opacity: 0.5;
+            background: rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .playlist-item.drag-over {
+            border-top: 2px solid #00d4ff;
+        }
+
+        .drag-handle {
+            cursor: grab;
+            color: #555;
+            padding: 4px;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .drag-handle:hover {
+            color: #888;
+        }
+
+        .item-index {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .item-platform {
+            font-size: 0.75rem;
+            color: #8892b0;
+        }
+
+        .item-delete {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .item-delete:hover {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .empty-playlist {
+            text-align: center;
+            padding: 40px 20px;
+            color: #555;
+        }
+
+        .empty-playlist svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* 設定セクション */
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .setting-label {
+            font-size: 0.9rem;
+            color: #8892b0;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle.active {
+            background: linear-gradient(145deg, #7b2cbf, #5a189a);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle.active::after {
+            left: 27px;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .playing-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #00d4ff;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎬 クロスプラットフォーム動画プレイヤー</h1>
+            <p>YouTubeとニコニコ動画を一つのプレイリストで連続再生</p>
+        </header>
+
+        <!-- ローカルファイル警告 -->
+        <div class="server-notice" id="serverNotice">
+            <span class="server-notice-icon">⚠️</span>
+            <div class="server-notice-text">
+                <h4>ローカルサーバーで実行してください</h4>
+                <p>YouTubeの埋め込みにはHTTPサーバーが必要です。このフォルダで <code>python -m http.server 8080</code>
+                    を実行し、<code>http://localhost:8080/musicplayer.html</code> にアクセスしてください。</p>
+            </div>
+        </div>
+
+        <!-- プレイヤーエリア -->
+        <main class="player-area">
+            <div class="video-container" id="videoContainer">
+                <div class="no-video">
+                    <span style="font-size: 4rem;">🎥</span>
+                    <p>プレイリストから動画を選択してください</p>
+                </div>
+            </div>
+
+            <div class="now-playing" id="nowPlaying" style="display: none;">
+                <h3><span class="playing-indicator"></span>再生中</h3>
+                <div class="title" id="currentTitle">-</div>
+                <span class="platform" id="currentPlatform">-</span>
+                <div class="play-mode-info">
+                    <span id="shuffleStatus">🔀 シャッフル: OFF</span>
+                    <span id="repeatStatus">🔁 リピート: OFF</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="mode-btn" id="shuffleBtn" data-tooltip="シャッフル再生">🔀</button>
+                <button class="control-btn" id="prevBtn" disabled>⏮ 前へ</button>
+                <button class="control-btn" id="playPauseBtn" disabled>▶ 再生</button>
+                <button class="control-btn" id="nextBtn" disabled>次へ ⏭</button>
+                <button class="mode-btn" id="repeatBtn" data-tooltip="リピート再生">🔁</button>
+            </div>
+        </main>
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+            <!-- ======================================== -->
+            <!-- ★★★ 動画リンク登録フォーム ★★★ -->
+            <!-- ======================================== -->
+            <div class="add-video-section">
+                <h2>➕ 動画を追加</h2>
+                <div class="input-group">
+                    <label for="videoUrl">動画URL（YouTube / ニコニコ動画）</label>
+                    <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="input-group">
+                    <label for="videoTitle">タイトル（任意）</label>
+                    <input type="text" id="videoTitle" placeholder="動画のタイトルを入力...">
+                </div>
+                <button class="add-btn" id="addBtn">プレイリストに追加</button>
+            </div>
+
+            <div class="playlist-section">
+                <div class="playlist-header">
+                    <h2>📋 プレイリスト</h2>
+                    <span class="playlist-count" id="playlistCount">0曲</span>
+                </div>
+                <div class="playlist" id="playlist">
+                    <div class="empty-playlist">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        <p>プレイリストが空です</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="setting-item">
+                    <span class="setting-label">▶️ 自動で次の動画を再生</span>
+                    <div class="toggle active" id="autoPlayToggle"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // ======================================== 
+        // ★★★ プレイリストデータ ★★★
+        // ここに事前登録する動画を追加できます
+        // ======================================== 
+        const DEFAULT_PLAYLIST = [
+            // { url: "https://www.youtube.com/watch?v=VIDEO_ID", title: "タイトル" },
+        ];
+
+        // 状態
+        let playlist = [];
+        let currentIndex = -1;
+        let autoPlay = true;
+        let shuffleMode = false;
+        let repeatMode = 'off';
+        let shuffleHistory = [];
+        let shuffleHistoryIndex = -1;
+        let isPlaying = false;
+        let currentPlatformType = null;
+        let youtubePlayer = null;
+        let youtubeReady = false;
+        let isLocalFile = window.location.protocol === 'file:';
+
+        // DOM
+        const videoContainer = document.getElementById('videoContainer');
+        const nowPlaying = document.getElementById('nowPlaying');
+        const currentTitle = document.getElementById('currentTitle');
+        const currentPlatform = document.getElementById('currentPlatform');
+        const shuffleStatus = document.getElementById('shuffleStatus');
+        const repeatStatus = document.getElementById('repeatStatus');
+        const playlistEl = document.getElementById('playlist');
+        const playlistCount = document.getElementById('playlistCount');
+        const videoUrlInput = document.getElementById('videoUrl');
+        const videoTitleInput = document.getElementById('videoTitle');
+        const addBtn = document.getElementById('addBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const repeatBtn = document.getElementById('repeatBtn');
+        const autoPlayToggle = document.getElementById('autoPlayToggle');
+        const serverNotice = document.getElementById('serverNotice');
+
+        let draggedItem = null;
+        let draggedIndex = null;
+
+        // ローカルファイル警告表示
+        if (isLocalFile) {
+            serverNotice.classList.add('show');
+        }
+
+        // YouTube IFrame API 動的読み込み
+        function loadYouTubeAPI() {
+            if (document.getElementById('youtube-api')) return;
+            const tag = document.createElement('script');
+            tag.id = 'youtube-api';
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(tag);
+        }
+
+        window.onYouTubeIframeAPIReady = function () {
+            youtubeReady = true;
+            console.log('YouTube API Ready');
+        };
+
+        // プレイヤーをクリーンアップする共通関数
+        function cleanupPlayer() {
+            // YouTubeプレイヤーを破棄
+            if (youtubePlayer) {
+                try {
+                    youtubePlayer.stopVideo();
+                    youtubePlayer.destroy();
+                } catch (e) {
+                    console.log('YouTube player cleanup:', e);
+                }
+                youtubePlayer = null;
+            }
+            // コンテナを空にする
+            videoContainer.innerHTML = '';
+        }
+
+        function createYouTubePlayer(videoId) {
+            // 少し待ってから新しいプレイヤーを作成（前のコンテンツは表示したまま）
+            setTimeout(() => {
+                cleanupPlayer();
+                videoContainer.innerHTML = '<div id="ytPlayer"></div>';
+
+                // ローカルファイルの場合はiframeを直接使用
+                if (isLocalFile) {
+                    videoContainer.innerHTML = `
+                        <iframe 
+                            id="ytIframe"
+                            src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;">
+                        </iframe>
+                    `;
+                    isPlaying = true;
+                    updatePlayPauseButton();
+                    return;
+                }
+
+                // サーバー経由の場合はAPIを使用
+                if (!youtubeReady) {
+                    loadYouTubeAPI();
+                    setTimeout(() => createYouTubePlayer(videoId), 500);
+                    return;
+                }
+
+                youtubePlayer = new YT.Player('ytPlayer', {
+                    videoId: videoId,
+                    playerVars: {
+                        autoplay: 1,
+                        rel: 0,
+                        modestbranding: 1,
+                        playsinline: 1
+                    },
+                    events: {
+                        onReady: (e) => { e.target.playVideo(); isPlaying = true; updatePlayPauseButton(); },
+                        onStateChange: (e) => {
+                            if (e.data === YT.PlayerState.ENDED && autoPlay) playNext();
+                            else if (e.data === YT.PlayerState.PLAYING) { isPlaying = true; updatePlayPauseButton(); }
+                            else if (e.data === YT.PlayerState.PAUSED) { isPlaying = false; updatePlayPauseButton(); }
+                        },
+                        onError: (e) => console.error('YT Error:', e.data)
+                    }
+                });
+            }, 100);
+        }
+
+        function createNiconicoPlayer(videoId) {
+            // 少し待ってから新しいプレイヤーを作成（前のコンテンツは表示したまま）
+            setTimeout(() => {
+                cleanupPlayer();
+                // ニコニコ動画の埋め込みプレイヤー + フォールバックリンク
+                const nicoUrl = `https://www.nicovideo.jp/watch/${videoId}`;
+
+                // iframeとボタンバーを同時に表示
+                videoContainer.innerHTML = `
+                    <iframe 
+                        id="nicoPlayer"
+                        src="https://embed.nicovideo.jp/watch/${videoId}"
+                        allow="autoplay; fullscreen"
+                        allowfullscreen
+                        style="position:absolute;top:0;left:0;width:100%;height:calc(100% - 50px);border:none;">
+                    </iframe>
+                    <div id="nicoControlBar" style="position:absolute;bottom:0;left:0;right:0;height:50px;
+                                background:rgba(0,0,0,0.9);padding:8px 12px;display:flex;align-items:center;
+                                justify-content:space-between;gap:10px;z-index:9999;">
+                        <span style="color:#888;font-size:0.8rem;">
+                            ⚠️ 埋め込み再生できない場合:
+                        </span>
+                        <a href="${nicoUrl}" target="_blank" rel="noopener" 
+                           style="background:linear-gradient(145deg,#00d4ff,#0099cc);color:#000;padding:6px 16px;
+                                  border-radius:20px;text-decoration:none;font-weight:bold;font-size:0.85rem;
+                                  transition:all 0.3s ease;">
+                            🔗 ニコニコ動画で開く
+                        </a>
+                        <button onclick="playNext()" 
+                                style="background:linear-gradient(145deg,#7b2cbf,#5a189a);color:#fff;padding:6px 16px;
+                                       border:none;border-radius:20px;cursor:pointer;font-weight:bold;font-size:0.85rem;">
+                            次へ ⏭
+                        </button>
+                    </div>
+                `;
+                isPlaying = true;
+                updatePlayPauseButton();
+            }, 500);
+        }
+
+        function parseVideoUrl(url) {
+            if (!url) return null;
+            url = url.trim();
+
+            // YouTube
+            const ytPatterns = [
+                /(?:youtube\.com\/watch\?.*v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/
+            ];
+            for (const p of ytPatterns) {
+                const m = url.match(p);
+                if (m) return { platform: 'youtube', videoId: m[1] };
+            }
+
+            // Niconico
+            const nicoPatterns = [
+                /nicovideo\.jp\/watch\/([a-z]{0,2}\d+)/,
+                /nico\.ms\/([a-z]{0,2}\d+)/
+            ];
+            for (const p of nicoPatterns) {
+                const m = url.match(p);
+                if (m) return { platform: 'niconico', videoId: m[1] };
+            }
+
+            return null;
+        }
+
+        function addToPlaylist(url, title) {
+            const parsed = parseVideoUrl(url);
+            if (!parsed) {
+                alert('有効なURLを入力してください');
+                return false;
+            }
+            playlist.push({
+                id: Date.now() + Math.random(),
+                url, title: title || `動画 ${playlist.length + 1}`,
+                ...parsed
+            });
+            savePlaylist();
+            renderPlaylist();
+            updateControls();
+            return true;
+        }
+
+        function removeFromPlaylist(id) {
+            const idx = playlist.findIndex(i => i.id === id);
+            if (idx === -1) return;
+            playlist.splice(idx, 1);
+            if (currentIndex >= playlist.length) currentIndex = playlist.length - 1;
+            if (idx === currentIndex) {
+                playlist.length > 0 ? playVideo(currentIndex) : stopVideo();
+            } else if (idx < currentIndex) currentIndex--;
+            savePlaylist();
+            renderPlaylist();
+            updateControls();
+        }
+
+        function renderPlaylist() {
+            if (playlist.length === 0) {
+                playlistEl.innerHTML = `<div class="empty-playlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg><p>プレイリストが空です</p></div>`;
+            } else {
+                playlistEl.innerHTML = playlist.map((item, i) => `
+                    <div class="playlist-item ${i === currentIndex ? 'active' : ''}" data-index="${i}" draggable="true">
+                        <span class="drag-handle">☰</span>
+                        <div class="item-index">${i + 1}</div>
+                        <div class="item-info">
+                            <div class="item-title">${escapeHtml(item.title)}</div>
+                            <div class="item-platform">${item.platform === 'youtube' ? 'YouTube' : 'ニコニコ'}</div>
+                        </div>
+                        <button class="item-delete" data-id="${item.id}">✕</button>
+                    </div>
+                `).join('');
+
+                playlistEl.querySelectorAll('.playlist-item').forEach(el => {
+                    el.addEventListener('click', e => {
+                        if (e.target.classList.contains('item-delete') || e.target.classList.contains('drag-handle')) return;
+                        const idx = parseInt(el.dataset.index);
+                        if (shuffleMode) {
+                            shuffleHistory = shuffleHistory.slice(0, shuffleHistoryIndex + 1);
+                            shuffleHistory.push(idx);
+                            shuffleHistoryIndex = shuffleHistory.length - 1;
+                        }
+                        playVideo(idx);
+                    });
+                    el.addEventListener('dragstart', handleDragStart);
+                    el.addEventListener('dragend', handleDragEnd);
+                    el.addEventListener('dragover', handleDragOver);
+                    el.addEventListener('dragleave', handleDragLeave);
+                    el.addEventListener('drop', handleDrop);
+                });
+
+                playlistEl.querySelectorAll('.item-delete').forEach(btn => {
+                    btn.addEventListener('click', e => {
+                        e.stopPropagation();
+                        removeFromPlaylist(parseFloat(btn.dataset.id));
+                    });
+                });
+            }
+            playlistCount.textContent = `${playlist.length}曲`;
+        }
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            draggedIndex = parseInt(this.dataset.index);
+            this.classList.add('dragging');
+        }
+        function handleDragEnd() {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.playlist-item').forEach(i => i.classList.remove('drag-over'));
+            draggedItem = null; draggedIndex = null;
+        }
+        function handleDragOver(e) {
+            e.preventDefault();
+            if (this !== draggedItem) this.classList.add('drag-over');
+        }
+        function handleDragLeave() { this.classList.remove('drag-over'); }
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            const target = parseInt(this.dataset.index);
+            if (draggedIndex !== null && draggedIndex !== target) {
+                const [item] = playlist.splice(draggedIndex, 1);
+                playlist.splice(target, 0, item);
+                if (currentIndex === draggedIndex) currentIndex = target;
+                else if (draggedIndex < currentIndex && target >= currentIndex) currentIndex--;
+                else if (draggedIndex > currentIndex && target <= currentIndex) currentIndex++;
+                savePlaylist();
+                renderPlaylist();
+            }
+        }
+
+        function escapeHtml(t) {
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+
+        function toggleShuffle() {
+            shuffleMode = !shuffleMode;
+            shuffleBtn.classList.toggle('active', shuffleMode);
+            shuffleHistory = shuffleMode && currentIndex >= 0 ? [currentIndex] : [];
+            shuffleHistoryIndex = shuffleHistory.length - 1;
+            updateModeDisplay();
+            saveState();
+        }
+
+        function toggleRepeat() {
+            if (repeatMode === 'off') { repeatMode = 'all'; repeatBtn.innerHTML = '🔁'; repeatBtn.classList.add('active'); }
+            else if (repeatMode === 'all') { repeatMode = 'one'; repeatBtn.innerHTML = '🔂'; }
+            else { repeatMode = 'off'; repeatBtn.innerHTML = '🔁'; repeatBtn.classList.remove('active'); }
+            updateModeDisplay();
+            saveState();
+        }
+
+        function updateModeDisplay() {
+            shuffleStatus.textContent = `🔀 シャッフル: ${shuffleMode ? 'ON' : 'OFF'}`;
+            shuffleStatus.classList.toggle('active-mode', shuffleMode);
+            let rt = 'OFF';
+            if (repeatMode === 'all') rt = '全曲';
+            else if (repeatMode === 'one') rt = '1曲';
+            repeatStatus.textContent = `🔁 リピート: ${rt}`;
+            repeatStatus.classList.toggle('active-mode', repeatMode !== 'off');
+        }
+
+        function getNextIndex() {
+            if (!playlist.length) return -1;
+            if (repeatMode === 'one') return currentIndex;
+            if (shuffleMode) {
+                if (shuffleHistoryIndex < shuffleHistory.length - 1) return shuffleHistory[shuffleHistoryIndex + 1];
+                const unplayed = playlist.map((_, i) => i).filter(i => !shuffleHistory.includes(i));
+                if (!unplayed.length) {
+                    if (repeatMode === 'all') { shuffleHistory = []; shuffleHistoryIndex = -1; return Math.floor(Math.random() * playlist.length); }
+                    return -1;
+                }
+                return unplayed[Math.floor(Math.random() * unplayed.length)];
+            }
+            if (currentIndex < playlist.length - 1) return currentIndex + 1;
+            if (repeatMode === 'all') return 0;
+            return -1;
+        }
+
+        function playVideo(idx) {
+            if (idx < 0 || idx >= playlist.length) return;
+            currentIndex = idx;
+            const item = playlist[idx];
+            currentPlatformType = item.platform;
+
+            if (item.platform === 'youtube') createYouTubePlayer(item.videoId);
+            else createNiconicoPlayer(item.videoId);
+
+            currentTitle.textContent = item.title;
+            currentPlatform.textContent = item.platform === 'youtube' ? 'YouTube' : 'ニコニコ動画';
+            currentPlatform.className = `platform ${item.platform}`;
+            nowPlaying.style.display = 'block';
+            updateModeDisplay();
+            renderPlaylist();
+            updateControls();
+            saveState();
+        }
+
+        function stopVideo() {
+            if (youtubePlayer) { try { youtubePlayer.destroy(); } catch (e) { } youtubePlayer = null; }
+            currentIndex = -1; currentPlatformType = null; isPlaying = false;
+            videoContainer.innerHTML = `<div class="no-video"><span style="font-size:4rem">🎥</span><p>プレイリストから動画を選択してください</p></div>`;
+            nowPlaying.style.display = 'none';
+            updatePlayPauseButton();
+            renderPlaylist();
+            updateControls();
+        }
+
+        function togglePlayPause() {
+            if (currentIndex === -1 && playlist.length) {
+                if (shuffleMode) {
+                    const r = Math.floor(Math.random() * playlist.length);
+                    shuffleHistory = [r]; shuffleHistoryIndex = 0;
+                    playVideo(r);
+                } else playVideo(0);
+                return;
+            }
+            if (currentPlatformType === 'youtube' && youtubePlayer && !isLocalFile) {
+                try { isPlaying ? youtubePlayer.pauseVideo() : youtubePlayer.playVideo(); } catch (e) { }
+            }
+        }
+
+        function updatePlayPauseButton() {
+            playPauseBtn.innerHTML = isPlaying ? '⏸ 一時停止' : '▶ 再生';
+            playPauseBtn.classList.toggle('playing', isPlaying);
+        }
+
+        function playNext() {
+            const next = getNextIndex();
+            if (next >= 0) {
+                if (shuffleMode) { shuffleHistoryIndex++; if (shuffleHistoryIndex >= shuffleHistory.length) shuffleHistory.push(next); }
+                playVideo(next);
+            } else if (repeatMode === 'off') stopVideo();
+        }
+
+        function playPrev() {
+            if (shuffleMode && shuffleHistoryIndex > 0) { shuffleHistoryIndex--; playVideo(shuffleHistory[shuffleHistoryIndex]); }
+            else {
+                let prev = currentIndex > 0 ? currentIndex - 1 : (repeatMode !== 'off' ? playlist.length - 1 : currentIndex);
+                playVideo(prev);
+            }
+        }
+
+        function updateControls() {
+            const has = playlist.length > 0;
+            prevBtn.disabled = nextBtn.disabled = playPauseBtn.disabled = !has;
+        }
+
+        function savePlaylist() { localStorage.setItem('crossPlayerPlaylist', JSON.stringify(playlist)); }
+        function loadPlaylist() {
+            const s = localStorage.getItem('crossPlayerPlaylist');
+            if (s) playlist = JSON.parse(s);
+            else if (DEFAULT_PLAYLIST.length) {
+                DEFAULT_PLAYLIST.forEach(i => {
+                    const p = parseVideoUrl(i.url);
+                    if (p) playlist.push({ id: Date.now() + Math.random(), url: i.url, title: i.title, ...p });
+                });
+                savePlaylist();
+            }
+        }
+        function saveState() { localStorage.setItem('crossPlayerState', JSON.stringify({ currentIndex, autoPlay, shuffleMode, repeatMode })); }
+        function loadState() {
+            const s = localStorage.getItem('crossPlayerState');
+            if (s) {
+                const st = JSON.parse(s);
+                autoPlay = st.autoPlay ?? true;
+                shuffleMode = st.shuffleMode || false;
+                repeatMode = st.repeatMode || 'off';
+                autoPlayToggle.classList.toggle('active', autoPlay);
+                shuffleBtn.classList.toggle('active', shuffleMode);
+                if (repeatMode !== 'off') repeatBtn.classList.add('active');
+                if (repeatMode === 'one') repeatBtn.innerHTML = '🔂';
+                updateModeDisplay();
+            }
+        }
+
+        addBtn.addEventListener('click', () => {
+            const url = videoUrlInput.value.trim(), title = videoTitleInput.value.trim();
+            if (!url) { alert('URLを入力してください'); return; }
+            if (addToPlaylist(url, title)) { videoUrlInput.value = ''; videoTitleInput.value = ''; }
+        });
+        videoUrlInput.addEventListener('keypress', e => { if (e.key === 'Enter') addBtn.click(); });
+        prevBtn.addEventListener('click', playPrev);
+        nextBtn.addEventListener('click', playNext);
+        playPauseBtn.addEventListener('click', togglePlayPause);
+        shuffleBtn.addEventListener('click', toggleShuffle);
+        repeatBtn.addEventListener('click', toggleRepeat);
+        autoPlayToggle.addEventListener('click', () => { autoPlay = !autoPlay; autoPlayToggle.classList.toggle('active', autoPlay); saveState(); });
+
+        // 初期化
+        loadPlaylist();
+        loadState();
+        renderPlaylist();
+        updateControls();
+        updateModeDisplay();
+        if (!isLocalFile) loadYouTubeAPI();
+    </script>
+</body>
+
+</html>
