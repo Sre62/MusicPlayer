@@ -368,6 +368,210 @@
             min-height: 0;
         }
 
+        /* プレイリスト選択 */
+        .playlist-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+
+        .playlist-dropdown {
+            flex: 1;
+            position: relative;
+        }
+
+        .playlist-dropdown select {
+            width: 100%;
+            padding: 10px 36px 10px 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+        }
+
+        .playlist-dropdown select:focus {
+            outline: none;
+            border-color: #7b2cbf;
+            box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+        }
+
+        .playlist-dropdown::after {
+            content: '▼';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            pointer-events: none;
+            font-size: 0.7rem;
+        }
+
+        .playlist-manage-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #888;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .playlist-manage-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #aaa;
+        }
+
+        .playlist-manage-btn.add {
+            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            color: #000;
+        }
+
+        .playlist-manage-btn.add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        /* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888;
+        }
+
+        .modal-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #aaa;
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            color: #000;
+        }
+
+        .modal-btn.confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .modal-btn.delete {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a5a);
+            color: #fff;
+        }
+
+        .modal-btn.delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
         .playlist-header {
             display: flex;
             justify-content: space-between;
@@ -672,6 +876,16 @@
             </div>
 
             <div class="playlist-section">
+                <!-- プレイリスト選択 -->
+                <div class="playlist-selector">
+                    <div class="playlist-dropdown">
+                        <select id="playlistSelect"></select>
+                    </div>
+                    <button class="playlist-manage-btn add" id="newPlaylistBtn" title="新しいプレイリストを作成">➕</button>
+                    <button class="playlist-manage-btn" id="renamePlaylistBtn" title="プレイリスト名を変更">✏️</button>
+                    <button class="playlist-manage-btn" id="deletePlaylistBtn" title="プレイリストを削除">🗑️</button>
+                </div>
+
                 <div class="playlist-header">
                     <h2>📋 プレイリスト</h2>
                     <span class="playlist-count" id="playlistCount">0曲</span>
@@ -695,6 +909,58 @@
                 </div>
             </div>
         </aside>
+
+        <!-- モーダル: 新規プレイリスト作成 -->
+        <div class="modal" id="newPlaylistModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>新しいプレイリストを作成</h3>
+                    <button class="modal-close" onclick="closeModal('newPlaylistModal')">✕</button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="modal-input" id="newPlaylistName" placeholder="プレイリスト名を入力...">
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" onclick="closeModal('newPlaylistModal')">キャンセル</button>
+                    <button class="modal-btn confirm" id="confirmNewPlaylist">作成</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- モーダル: プレイリスト名変更 -->
+        <div class="modal" id="renamePlaylistModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>プレイリスト名を変更</h3>
+                    <button class="modal-close" onclick="closeModal('renamePlaylistModal')">✕</button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="modal-input" id="renamePlaylistName" placeholder="新しい名前を入力...">
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" onclick="closeModal('renamePlaylistModal')">キャンセル</button>
+                    <button class="modal-btn confirm" id="confirmRenamePlaylist">変更</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- モーダル: プレイリスト削除確認 -->
+        <div class="modal" id="deletePlaylistModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>プレイリストを削除</h3>
+                    <button class="modal-close" onclick="closeModal('deletePlaylistModal')">✕</button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: #8892b0;">このプレイリストを削除してもよろしいですか?</p>
+                    <p style="color: #ff6b6b; font-size: 0.85rem; margin-top: 8px;">※ この操作は取り消せません</p>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" onclick="closeModal('deletePlaylistModal')">キャンセル</button>
+                    <button class="modal-btn delete" id="confirmDeletePlaylist">削除</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -707,7 +973,13 @@
         ];
 
         // 状態
-        let playlist = [];
+        let playlists = {
+            'default': {
+                name: 'デフォルト',
+                items: []
+            }
+        };
+        let currentPlaylistId = 'default';
         let currentIndex = -1;
         let autoPlay = true;
         let shuffleMode = false;
@@ -719,6 +991,19 @@
         let youtubePlayer = null;
         let youtubeReady = false;
         let isLocalFile = window.location.protocol === 'file:';
+
+        // 現在のプレイリストを取得するヘルパー関数
+        function getCurrentPlaylist() {
+            return playlists[currentPlaylistId]?.items || [];
+        }
+
+        function setCurrentPlaylist(items) {
+            if (playlists[currentPlaylistId]) {
+                playlists[currentPlaylistId].items = items;
+            }
+        }
+
+
 
         // DOM
         const videoContainer = document.getElementById('videoContainer');
@@ -739,6 +1024,11 @@
         const repeatBtn = document.getElementById('repeatBtn');
         const autoPlayToggle = document.getElementById('autoPlayToggle');
         const serverNotice = document.getElementById('serverNotice');
+        const playlistSelect = document.getElementById('playlistSelect');
+        const newPlaylistBtn = document.getElementById('newPlaylistBtn');
+        const renamePlaylistBtn = document.getElementById('renamePlaylistBtn');
+        const deletePlaylistBtn = document.getElementById('deletePlaylistBtn');
+
 
         let draggedItem = null;
         let draggedIndex = null;
@@ -748,7 +1038,101 @@
             serverNotice.classList.add('show');
         }
 
+        // ======================================== 
+        // プレイリスト管理関数
+        // ======================================== 
+        function generatePlaylistId() {
+            return 'playlist-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function createPlaylist(name) {
+            if (!name || !name.trim()) {
+                alert('プレイリスト名を入力してください');
+                return false;
+            }
+            const id = generatePlaylistId();
+            playlists[id] = {
+                name: name.trim(),
+                items: []
+            };
+            currentPlaylistId = id;
+            currentIndex = -1;
+            savePlaylists();
+            renderPlaylistSelector();
+            renderPlaylist();
+            updateControls();
+            stopVideo();
+            return true;
+        }
+
+        function deletePlaylist(id) {
+            if (id === 'default') {
+                alert('デフォルトプレイリストは削除できません');
+                return false;
+            }
+            if (Object.keys(playlists).length <= 1) {
+                alert('最後のプレイリストは削除できません');
+                return false;
+            }
+            delete playlists[id];
+            if (currentPlaylistId === id) {
+                currentPlaylistId = 'default';
+                currentIndex = -1;
+                stopVideo();
+            }
+            savePlaylists();
+            renderPlaylistSelector();
+            renderPlaylist();
+            updateControls();
+            return true;
+        }
+
+        function renamePlaylist(id, newName) {
+            if (!newName || !newName.trim()) {
+                alert('プレイリスト名を入力してください');
+                return false;
+            }
+            if (playlists[id]) {
+                playlists[id].name = newName.trim();
+                savePlaylists();
+                renderPlaylistSelector();
+                return true;
+            }
+            return false;
+        }
+
+        function switchPlaylist(id) {
+            if (!playlists[id]) return;
+            currentPlaylistId = id;
+            currentIndex = -1;
+            shuffleHistory = [];
+            shuffleHistoryIndex = -1;
+            stopVideo();
+            renderPlaylist();
+            updateControls();
+            saveState();
+        }
+
+        function renderPlaylistSelector() {
+            playlistSelect.innerHTML = Object.entries(playlists).map(([id, pl]) =>
+                `<option value="${id}" ${id === currentPlaylistId ? 'selected' : ''}>${escapeHtml(pl.name)}</option>`
+            ).join('');
+        }
+
+        // モーダル管理
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // グローバルスコープに追加（HTMLから呼び出すため）
+        window.closeModal = closeModal;
+
         // YouTube IFrame API 動的読み込み
+
         function loadYouTubeAPI() {
             if (document.getElementById('youtube-api')) return;
             const tag = document.createElement('script');
@@ -901,31 +1285,37 @@
                 alert('有効なURLを入力してください');
                 return false;
             }
-            playlist.push({
+            const playlist = getCurrentPlaylist();
+            const newItem = {
                 id: Date.now() + Math.random(),
                 url, title: title || `動画 ${playlist.length + 1}`,
                 ...parsed
-            });
-            savePlaylist();
+            };
+            playlist.push(newItem);
+            setCurrentPlaylist(playlist);
+            savePlaylists();
             renderPlaylist();
             updateControls();
             return true;
         }
 
         function removeFromPlaylist(id) {
+            const playlist = getCurrentPlaylist();
             const idx = playlist.findIndex(i => i.id === id);
             if (idx === -1) return;
             playlist.splice(idx, 1);
+            setCurrentPlaylist(playlist);
             if (currentIndex >= playlist.length) currentIndex = playlist.length - 1;
             if (idx === currentIndex) {
                 playlist.length > 0 ? playVideo(currentIndex) : stopVideo();
             } else if (idx < currentIndex) currentIndex--;
-            savePlaylist();
+            savePlaylists();
             renderPlaylist();
             updateControls();
         }
 
         function renderPlaylist() {
+            const playlist = getCurrentPlaylist();
             if (playlist.length === 0) {
                 playlistEl.innerHTML = `<div class="empty-playlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg><p>プレイリストが空です</p></div>`;
             } else {
@@ -989,12 +1379,14 @@
             this.classList.remove('drag-over');
             const target = parseInt(this.dataset.index);
             if (draggedIndex !== null && draggedIndex !== target) {
+                const playlist = getCurrentPlaylist();
                 const [item] = playlist.splice(draggedIndex, 1);
                 playlist.splice(target, 0, item);
+                setCurrentPlaylist(playlist);
                 if (currentIndex === draggedIndex) currentIndex = target;
                 else if (draggedIndex < currentIndex && target >= currentIndex) currentIndex--;
                 else if (draggedIndex > currentIndex && target <= currentIndex) currentIndex++;
-                savePlaylist();
+                savePlaylists();
                 renderPlaylist();
             }
         }
@@ -1033,6 +1425,7 @@
         }
 
         function getNextIndex() {
+            const playlist = getCurrentPlaylist();
             if (!playlist.length) return -1;
             if (repeatMode === 'one') return currentIndex;
             if (shuffleMode) {
@@ -1050,6 +1443,7 @@
         }
 
         function playVideo(idx) {
+            const playlist = getCurrentPlaylist();
             if (idx < 0 || idx >= playlist.length) return;
             currentIndex = idx;
             const item = playlist[idx];
@@ -1079,6 +1473,7 @@
         }
 
         function togglePlayPause() {
+            const playlist = getCurrentPlaylist();
             if (currentIndex === -1 && playlist.length) {
                 if (shuffleMode) {
                     const r = Math.floor(Math.random() * playlist.length);
@@ -1114,27 +1509,62 @@
         }
 
         function updateControls() {
+            const playlist = getCurrentPlaylist();
             const has = playlist.length > 0;
             prevBtn.disabled = nextBtn.disabled = playPauseBtn.disabled = !has;
         }
 
-        function savePlaylist() { localStorage.setItem('crossPlayerPlaylist', JSON.stringify(playlist)); }
-        function loadPlaylist() {
-            const s = localStorage.getItem('crossPlayerPlaylist');
-            if (s) playlist = JSON.parse(s);
-            else if (DEFAULT_PLAYLIST.length) {
-                DEFAULT_PLAYLIST.forEach(i => {
-                    const p = parseVideoUrl(i.url);
-                    if (p) playlist.push({ id: Date.now() + Math.random(), url: i.url, title: i.title, ...p });
-                });
-                savePlaylist();
+        function savePlaylists() {
+            localStorage.setItem('crossPlayerPlaylists', JSON.stringify(playlists));
+        }
+
+        function loadPlaylists() {
+            const s = localStorage.getItem('crossPlayerPlaylists');
+            if (s) {
+                playlists = JSON.parse(s);
+                // デフォルトプレイリストが存在しない場合は作成
+                if (!playlists['default']) {
+                    playlists['default'] = { name: 'デフォルト', items: [] };
+                }
+            } else {
+                // 旧形式からの移行
+                const oldPlaylist = localStorage.getItem('crossPlayerPlaylist');
+                if (oldPlaylist) {
+                    playlists['default'].items = JSON.parse(oldPlaylist);
+                } else if (DEFAULT_PLAYLIST.length) {
+                    DEFAULT_PLAYLIST.forEach(i => {
+                        const p = parseVideoUrl(i.url);
+                        if (p) playlists['default'].items.push({
+                            id: Date.now() + Math.random(),
+                            url: i.url,
+                            title: i.title,
+                            ...p
+                        });
+                    });
+                }
+                savePlaylists();
             }
         }
-        function saveState() { localStorage.setItem('crossPlayerState', JSON.stringify({ currentIndex, autoPlay, shuffleMode, repeatMode })); }
+
+        function saveState() {
+            localStorage.setItem('crossPlayerState', JSON.stringify({
+                currentPlaylistId,
+                currentIndex,
+                autoPlay,
+                shuffleMode,
+                repeatMode
+            }));
+        }
+
         function loadState() {
             const s = localStorage.getItem('crossPlayerState');
             if (s) {
                 const st = JSON.parse(s);
+                currentPlaylistId = st.currentPlaylistId || 'default';
+                // プレイリストが存在しない場合はデフォルトに戻す
+                if (!playlists[currentPlaylistId]) {
+                    currentPlaylistId = 'default';
+                }
                 autoPlay = st.autoPlay ?? true;
                 shuffleMode = st.shuffleMode || false;
                 repeatMode = st.repeatMode || 'off';
@@ -1159,9 +1589,68 @@
         repeatBtn.addEventListener('click', toggleRepeat);
         autoPlayToggle.addEventListener('click', () => { autoPlay = !autoPlay; autoPlayToggle.classList.toggle('active', autoPlay); saveState(); });
 
+        // プレイリスト管理イベント
+        playlistSelect.addEventListener('change', (e) => {
+            switchPlaylist(e.target.value);
+        });
+
+        newPlaylistBtn.addEventListener('click', () => {
+            openModal('newPlaylistModal');
+            document.getElementById('newPlaylistName').value = '';
+            document.getElementById('newPlaylistName').focus();
+        });
+
+        document.getElementById('confirmNewPlaylist').addEventListener('click', () => {
+            const name = document.getElementById('newPlaylistName').value;
+            if (createPlaylist(name)) {
+                closeModal('newPlaylistModal');
+            }
+        });
+
+        document.getElementById('newPlaylistName').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('confirmNewPlaylist').click();
+            }
+        });
+
+        renamePlaylistBtn.addEventListener('click', () => {
+            const currentName = playlists[currentPlaylistId]?.name || '';
+            document.getElementById('renamePlaylistName').value = currentName;
+            openModal('renamePlaylistModal');
+            document.getElementById('renamePlaylistName').focus();
+        });
+
+        document.getElementById('confirmRenamePlaylist').addEventListener('click', () => {
+            const newName = document.getElementById('renamePlaylistName').value;
+            if (renamePlaylist(currentPlaylistId, newName)) {
+                closeModal('renamePlaylistModal');
+            }
+        });
+
+        document.getElementById('renamePlaylistName').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('confirmRenamePlaylist').click();
+            }
+        });
+
+        deletePlaylistBtn.addEventListener('click', () => {
+            if (currentPlaylistId === 'default') {
+                alert('デフォルトプレイリストは削除できません');
+                return;
+            }
+            openModal('deletePlaylistModal');
+        });
+
+        document.getElementById('confirmDeletePlaylist').addEventListener('click', () => {
+            if (deletePlaylist(currentPlaylistId)) {
+                closeModal('deletePlaylistModal');
+            }
+        });
+
         // 初期化
-        loadPlaylist();
+        loadPlaylists();
         loadState();
+        renderPlaylistSelector();
         renderPlaylist();
         updateControls();
         updateModeDisplay();
