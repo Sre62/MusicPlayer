@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
             min-height: 100vh;
             color: #e4e4e4;
         }
@@ -38,24 +38,22 @@
 
         .header h1 {
             font-size: 2.5rem;
-            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #ffffff;
             margin-bottom: 10px;
-            text-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .header p {
-            color: #8892b0;
+            color: #999;
             font-size: 1.1rem;
         }
 
         /* サーバー起動案内 */
         .server-notice {
             grid-column: 1 / -1;
-            background: linear-gradient(145deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.2));
-            border: 1px solid rgba(255, 193, 7, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
             padding: 16px 20px;
             display: none;
@@ -76,7 +74,7 @@
         }
 
         .server-notice-text h4 {
-            color: #ffc107;
+            color: #fff;
             margin-bottom: 4px;
         }
 
@@ -142,8 +140,8 @@
         }
 
         .control-btn {
-            background: linear-gradient(145deg, #7b2cbf, #5a189a);
-            border: none;
+            background: linear-gradient(145deg, #333, #222);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
             padding: 14px 28px;
             border-radius: 50px;
@@ -154,12 +152,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
         .control-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
+            background: linear-gradient(145deg, #444, #333);
+            box-shadow: 0 6px 25px rgba(255, 255, 255, 0.1);
         }
 
         .control-btn:disabled {
@@ -170,8 +169,8 @@
         }
 
         .control-btn.playing {
-            background: linear-gradient(145deg, #ff6b6b, #ee5a5a);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            background: linear-gradient(145deg, #555, #444);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
         }
 
         /* シャッフル・リピートボタン */
@@ -198,9 +197,9 @@
         }
 
         .mode-btn.active {
-            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            background: linear-gradient(145deg, #fff, #ddd);
             color: #000;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
 
         .mode-btn::before {
@@ -228,15 +227,15 @@
 
         /* 現在再生中の情報 */
         .now-playing {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 20px;
         }
 
         .now-playing h3 {
-            color: #00d4ff;
+            color: #fff;
             font-size: 0.9rem;
             margin-bottom: 8px;
             text-transform: uppercase;
@@ -267,7 +266,7 @@
         }
 
         .now-playing .play-mode-info .active-mode {
-            color: #00d4ff;
+            color: #fff;
         }
 
         .platform.youtube {
@@ -296,7 +295,7 @@
         }
 
         .add-video-section h2 {
-            color: #00d4ff;
+            color: #fff;
             font-size: 1.1rem;
             margin-bottom: 16px;
             display: flex;
@@ -328,8 +327,8 @@
 
         .input-group input:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .input-group input::placeholder {
@@ -339,7 +338,7 @@
         .add-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            background: linear-gradient(145deg, #fff, #ddd);
             border: none;
             border-radius: 10px;
             color: #000;
@@ -352,7 +351,7 @@
 
         .add-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
         }
 
         /* プレイリスト */
@@ -396,8 +395,8 @@
 
         .playlist-dropdown select:focus {
             outline: none;
-            border-color: #7b2cbf;
-            box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .playlist-dropdown::after {
@@ -433,13 +432,13 @@
         }
 
         .playlist-manage-btn.add {
-            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            background: linear-gradient(145deg, #fff, #ddd);
             color: #000;
         }
 
         .playlist-manage-btn.add:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
 
         /* モーダル */
@@ -479,7 +478,7 @@
         }
 
         .modal-header h3 {
-            color: #00d4ff;
+            color: #fff;
             font-size: 1.2rem;
         }
 
@@ -522,8 +521,8 @@
 
         .modal-input:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .modal-actions {
@@ -553,23 +552,23 @@
         }
 
         .modal-btn.confirm {
-            background: linear-gradient(145deg, #00d4ff, #0099cc);
+            background: linear-gradient(145deg, #fff, #ddd);
             color: #000;
         }
 
         .modal-btn.confirm:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
 
         .modal-btn.delete {
-            background: linear-gradient(145deg, #ff6b6b, #ee5a5a);
+            background: linear-gradient(145deg, #666, #555);
             color: #fff;
         }
 
         .modal-btn.delete:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
         }
 
         .playlist-header {
@@ -580,7 +579,7 @@
         }
 
         .playlist-header h2 {
-            color: #7b2cbf;
+            color: #fff;
             font-size: 1.1rem;
             display: flex;
             align-items: center;
@@ -588,8 +587,8 @@
         }
 
         .playlist-count {
-            background: rgba(123, 44, 191, 0.2);
-            color: #7b2cbf;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
@@ -597,7 +596,7 @@
         }
 
         .playlist {
-            flex: 1;
+            max-height: calc(5 * 60px);
             overflow-y: auto;
             padding-right: 8px;
         }
@@ -612,8 +611,12 @@
         }
 
         .playlist::-webkit-scrollbar-thumb {
-            background: rgba(123, 44, 191, 0.5);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 3px;
+        }
+
+        .playlist::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
 
         .playlist-item {
@@ -635,22 +638,23 @@
         }
 
         .playlist-item.active {
-            background: rgba(123, 44, 191, 0.2);
-            border-color: rgba(123, 44, 191, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .playlist-item.active .item-index {
-            background: linear-gradient(145deg, #7b2cbf, #5a189a);
+            background: linear-gradient(145deg, #fff, #ddd);
+            color: #000;
         }
 
         .playlist-item.dragging {
             opacity: 0.5;
-            background: rgba(0, 212, 255, 0.2);
-            border-color: rgba(0, 212, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         .playlist-item.drag-over {
-            border-top: 2px solid #00d4ff;
+            border-top: 2px solid #fff;
         }
 
         .drag-handle {
@@ -709,8 +713,8 @@
         }
 
         .item-delete:hover {
-            background: rgba(255, 107, 107, 0.2);
-            color: #ff6b6b;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
 
         .empty-playlist {
@@ -758,7 +762,7 @@
         }
 
         .toggle.active {
-            background: linear-gradient(145deg, #7b2cbf, #5a189a);
+            background: linear-gradient(145deg, #fff, #ddd);
         }
 
         .toggle::after {
@@ -768,7 +772,7 @@
             left: 3px;
             width: 20px;
             height: 20px;
-            background: #fff;
+            background: #000;
             border-radius: 50%;
             transition: all 0.3s ease;
         }
@@ -804,10 +808,75 @@
             display: inline-block;
             width: 8px;
             height: 8px;
-            background: #00d4ff;
+            background: #fff;
             border-radius: 50%;
             margin-right: 8px;
             animation: pulse 1s infinite;
+        }
+
+        /* Share buttons */
+        .share-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .share-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .share-code-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(145deg, #fff, #ddd);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(145deg, #4a4a4a, #333);
+            color: #fff;
+        }
+
+        textarea.modal-input {
+            min-height: 100px;
+            resize: vertical;
+            font-family: monospace;
         }
     </style>
 </head>
@@ -815,13 +884,13 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>🎬 クロスプラットフォーム動画プレイヤー</h1>
+            <h1>クロスプラットフォーム動画プレイヤー</h1>
             <p>YouTubeとニコニコ動画を一つのプレイリストで連続再生</p>
         </header>
 
         <!-- ローカルファイル警告 -->
         <div class="server-notice" id="serverNotice">
-            <span class="server-notice-icon">⚠️</span>
+            <span class="server-notice-icon" style="font-size: 1.5rem;">⚠</span>
             <div class="server-notice-text">
                 <h4>ローカルサーバーで実行してください</h4>
                 <p>YouTubeの埋め込みにはHTTPサーバーが必要です。このフォルダで <code>python -m http.server 8080</code>
@@ -833,7 +902,7 @@
         <main class="player-area">
             <div class="video-container" id="videoContainer">
                 <div class="no-video">
-                    <span style="font-size: 4rem;">🎥</span>
+                    <span style="font-size: 4rem;">▶</span>
                     <p>プレイリストから動画を選択してください</p>
                 </div>
             </div>
@@ -843,17 +912,26 @@
                 <div class="title" id="currentTitle">-</div>
                 <span class="platform" id="currentPlatform">-</span>
                 <div class="play-mode-info">
-                    <span id="shuffleStatus">🔀 シャッフル: OFF</span>
-                    <span id="repeatStatus">🔁 リピート: OFF</span>
+                    <span id="shuffleStatus">シャッフル: OFF</span>
+                    <span id="repeatStatus">リピート: OFF</span>
                 </div>
             </div>
 
             <div class="controls">
-                <button class="mode-btn" id="shuffleBtn" data-tooltip="シャッフル再生">🔀</button>
+                <button class="mode-btn" id="shuffleBtn" data-tooltip="シャッフル再生"><svg width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5" />
+                    </svg></button>
                 <button class="control-btn" id="prevBtn" disabled>⏮ 前へ</button>
                 <button class="control-btn" id="playPauseBtn" disabled>▶ 再生</button>
                 <button class="control-btn" id="nextBtn" disabled>次へ ⏭</button>
-                <button class="mode-btn" id="repeatBtn" data-tooltip="リピート再生">🔁</button>
+                <button class="mode-btn" id="repeatBtn" data-tooltip="リピート再生"><svg width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 1l4 4-4 4" />
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                        <path d="M7 23l-4-4 4-4" />
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                    </svg></button>
             </div>
         </main>
 
@@ -863,7 +941,7 @@
             <!-- ★★★ 動画リンク登録フォーム ★★★ -->
             <!-- ======================================== -->
             <div class="add-video-section">
-                <h2>➕ 動画を追加</h2>
+                <h2>動画を追加</h2>
                 <div class="input-group">
                     <label for="videoUrl">動画URL（YouTube / ニコニコ動画）</label>
                     <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
@@ -881,14 +959,18 @@
                     <div class="playlist-dropdown">
                         <select id="playlistSelect"></select>
                     </div>
-                    <button class="playlist-manage-btn add" id="newPlaylistBtn" title="新しいプレイリストを作成">➕</button>
-                    <button class="playlist-manage-btn" id="renamePlaylistBtn" title="プレイリスト名を変更">✏️</button>
-                    <button class="playlist-manage-btn" id="deletePlaylistBtn" title="プレイリストを削除">🗑️</button>
+                    <button class="playlist-manage-btn add" id="newPlaylistBtn" title="新しいプレイリストを作成">+</button>
+                    <button class="playlist-manage-btn" id="renamePlaylistBtn" title="プレイリスト名を変更">✎</button>
+                    <button class="playlist-manage-btn" id="deletePlaylistBtn" title="プレイリストを削除">×</button>
                 </div>
 
                 <div class="playlist-header">
-                    <h2>📋 プレイリスト</h2>
+                    <h2>プレイリスト</h2>
                     <span class="playlist-count" id="playlistCount">0曲</span>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn" id="sharePlaylistBtn">共有コード生成</button>
+                    <button class="share-btn" id="importPlaylistBtn">共有コード入力</button>
                 </div>
                 <div class="playlist" id="playlist">
                     <div class="empty-playlist">
@@ -904,7 +986,7 @@
 
             <div class="settings-section">
                 <div class="setting-item">
-                    <span class="setting-label">▶️ 自動で次の動画を再生</span>
+                    <span class="setting-label">自動で次の動画を再生</span>
                     <div class="toggle active" id="autoPlayToggle"></div>
                 </div>
             </div>
@@ -915,7 +997,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>新しいプレイリストを作成</h3>
-                    <button class="modal-close" onclick="closeModal('newPlaylistModal')">✕</button>
+                    <button class="modal-close" onclick="closeModal('newPlaylistModal')">×</button>
                 </div>
                 <div class="modal-body">
                     <input type="text" class="modal-input" id="newPlaylistName" placeholder="プレイリスト名を入力...">
@@ -932,7 +1014,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>プレイリスト名を変更</h3>
-                    <button class="modal-close" onclick="closeModal('renamePlaylistModal')">✕</button>
+                    <button class="modal-close" onclick="closeModal('renamePlaylistModal')">×</button>
                 </div>
                 <div class="modal-body">
                     <input type="text" class="modal-input" id="renamePlaylistName" placeholder="新しい名前を入力...">
@@ -949,7 +1031,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>プレイリストを削除</h3>
-                    <button class="modal-close" onclick="closeModal('deletePlaylistModal')">✕</button>
+                    <button class="modal-close" onclick="closeModal('deletePlaylistModal')">×</button>
                 </div>
                 <div class="modal-body">
                     <p style="color: #8892b0;">このプレイリストを削除してもよろしいですか?</p>
@@ -958,6 +1040,43 @@
                 <div class="modal-actions">
                     <button class="modal-btn cancel" onclick="closeModal('deletePlaylistModal')">キャンセル</button>
                     <button class="modal-btn delete" id="confirmDeletePlaylist">削除</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- モーダル: プレイリスト共有 -->
+        <div class="modal" id="sharePlaylistModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>プレイリスト共有コード</h3>
+                    <button class="modal-close" onclick="closeModal('sharePlaylistModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: #999; font-size: 0.9rem; margin-bottom: 12px;">このコードを共有して、他のデバイスでプレイリストをインポートできます
+                    </p>
+                    <div class="share-code-display" id="shareCodeDisplay"></div>
+                    <button class="copy-btn" id="copyShareCodeBtn">コピー</button>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" onclick="closeModal('sharePlaylistModal')">閉じる</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- モーダル: プレイリストインポート -->
+        <div class="modal" id="importPlaylistModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>プレイリストをインポート</h3>
+                    <button class="modal-close" onclick="closeModal('importPlaylistModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: #999; font-size: 0.9rem; margin-bottom: 12px;">共有コードを入力してプレイリストに追加します</p>
+                    <textarea class="modal-input" id="importShareCode" placeholder="共有コードを貼り付けてください..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" onclick="closeModal('importPlaylistModal')">キャンセル</button>
+                    <button class="modal-btn confirm" id="confirmImportPlaylist">インポート</button>
                 </div>
             </div>
         </div>
@@ -1327,7 +1446,7 @@
                             <div class="item-title">${escapeHtml(item.title)}</div>
                             <div class="item-platform">${item.platform === 'youtube' ? 'YouTube' : 'ニコニコ'}</div>
                         </div>
-                        <button class="item-delete" data-id="${item.id}">✕</button>
+                        <button class="item-delete" data-id="${item.id}">×</button>
                     </div>
                 `).join('');
 
@@ -1407,20 +1526,34 @@
         }
 
         function toggleRepeat() {
-            if (repeatMode === 'off') { repeatMode = 'all'; repeatBtn.innerHTML = '🔁'; repeatBtn.classList.add('active'); }
-            else if (repeatMode === 'all') { repeatMode = 'one'; repeatBtn.innerHTML = '🔂'; }
-            else { repeatMode = 'off'; repeatBtn.innerHTML = '🔁'; repeatBtn.classList.remove('active'); }
+            const svgRepeat = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
+            const svgRepeatOne = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/><text x="12" y="16" text-anchor="middle" font-size="10" fill="currentColor">1</text></svg>';
+
+            if (repeatMode === 'off') {
+                repeatMode = 'all';
+                repeatBtn.innerHTML = svgRepeat;
+                repeatBtn.classList.add('active');
+            }
+            else if (repeatMode === 'all') {
+                repeatMode = 'one';
+                repeatBtn.innerHTML = svgRepeatOne;
+            }
+            else {
+                repeatMode = 'off';
+                repeatBtn.innerHTML = svgRepeat;
+                repeatBtn.classList.remove('active');
+            }
             updateModeDisplay();
             saveState();
         }
 
         function updateModeDisplay() {
-            shuffleStatus.textContent = `🔀 シャッフル: ${shuffleMode ? 'ON' : 'OFF'}`;
+            shuffleStatus.textContent = `シャッフル: ${shuffleMode ? 'ON' : 'OFF'}`;
             shuffleStatus.classList.toggle('active-mode', shuffleMode);
             let rt = 'OFF';
             if (repeatMode === 'all') rt = '全曲';
             else if (repeatMode === 'one') rt = '1曲';
-            repeatStatus.textContent = `🔁 リピート: ${rt}`;
+            repeatStatus.textContent = `リピート: ${rt}`;
             repeatStatus.classList.toggle('active-mode', repeatMode !== 'off');
         }
 
@@ -1465,7 +1598,7 @@
         function stopVideo() {
             if (youtubePlayer) { try { youtubePlayer.destroy(); } catch (e) { } youtubePlayer = null; }
             currentIndex = -1; currentPlatformType = null; isPlaying = false;
-            videoContainer.innerHTML = `<div class="no-video"><span style="font-size:4rem">🎥</span><p>プレイリストから動画を選択してください</p></div>`;
+            videoContainer.innerHTML = `<div class="no-video"><span style="font-size:4rem">▶</span><p>プレイリストから動画を選択してください</p></div>`;
             nowPlaying.style.display = 'none';
             updatePlayPauseButton();
             renderPlaylist();
@@ -1571,7 +1704,7 @@
                 autoPlayToggle.classList.toggle('active', autoPlay);
                 shuffleBtn.classList.toggle('active', shuffleMode);
                 if (repeatMode !== 'off') repeatBtn.classList.add('active');
-                if (repeatMode === 'one') repeatBtn.innerHTML = '🔂';
+                if (repeatMode === 'one') repeatBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/><text x="12" y="16" text-anchor="middle" font-size="10" fill="currentColor">1</text></svg>';
                 updateModeDisplay();
             }
         }
@@ -1644,6 +1777,120 @@
         document.getElementById('confirmDeletePlaylist').addEventListener('click', () => {
             if (deletePlaylist(currentPlaylistId)) {
                 closeModal('deletePlaylistModal');
+            }
+        });
+
+        // ========================================
+        // プレイリスト共有機能
+        // ========================================
+        function generateShareCode() {
+            const playlist = getCurrentPlaylist();
+            if (playlist.length === 0) {
+                alert('プレイリストが空です');
+                return null;
+            }
+            // プレイリストデータをJSON化してBase64エンコード
+            const data = {
+                name: playlists[currentPlaylistId].name,
+                items: playlist.map(item => ({
+                    url: item.url,
+                    title: item.title,
+                    platform: item.platform,
+                    videoId: item.videoId
+                }))
+            };
+            try {
+                const jsonStr = JSON.stringify(data);
+                const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
+                return base64;
+            } catch (e) {
+                console.error('Share code generation error:', e);
+                alert('共有コードの生成に失敗しました');
+                return null;
+            }
+        }
+
+        function importShareCode(code) {
+            if (!code || !code.trim()) {
+                alert('共有コードを入力してください');
+                return false;
+            }
+            try {
+                const jsonStr = decodeURIComponent(escape(atob(code.trim())));
+                const data = JSON.parse(jsonStr);
+
+                if (!data.items || !Array.isArray(data.items)) {
+                    throw new Error('Invalid data format');
+                }
+
+                // 現在のプレイリストに追加
+                const playlist = getCurrentPlaylist();
+                let addedCount = 0;
+
+                data.items.forEach(item => {
+                    if (item.url && item.platform && item.videoId) {
+                        playlist.push({
+                            id: Date.now() + Math.random(),
+                            url: item.url,
+                            title: item.title || `動画 ${playlist.length + 1}`,
+                            platform: item.platform,
+                            videoId: item.videoId
+                        });
+                        addedCount++;
+                    }
+                });
+
+                if (addedCount > 0) {
+                    setCurrentPlaylist(playlist);
+                    savePlaylists();
+                    renderPlaylist();
+                    updateControls();
+                    alert(`${addedCount}曲をプレイリストに追加しました`);
+                    return true;
+                } else {
+                    alert('有効な動画が見つかりませんでした');
+                    return false;
+                }
+            } catch (e) {
+                console.error('Import error:', e);
+                alert('共有コードが無効です');
+                return false;
+            }
+        }
+
+        // 共有ボタンのイベントリスナー
+        document.getElementById('sharePlaylistBtn').addEventListener('click', () => {
+            const code = generateShareCode();
+            if (code) {
+                document.getElementById('shareCodeDisplay').textContent = code;
+                openModal('sharePlaylistModal');
+            }
+        });
+
+        document.getElementById('importPlaylistBtn').addEventListener('click', () => {
+            document.getElementById('importShareCode').value = '';
+            openModal('importPlaylistModal');
+        });
+
+        document.getElementById('copyShareCodeBtn').addEventListener('click', function () {
+            const code = document.getElementById('shareCodeDisplay').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = this;
+                btn.textContent = 'コピーしました!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'コピー';
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                alert('コピーに失敗しました');
+            });
+        });
+
+        document.getElementById('confirmImportPlaylist').addEventListener('click', () => {
+            const code = document.getElementById('importShareCode').value;
+            if (importShareCode(code)) {
+                closeModal('importPlaylistModal');
             }
         });
 
